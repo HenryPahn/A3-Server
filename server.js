@@ -10,8 +10,6 @@ const jwt = require('jsonwebtoken')
 
 const HTTP_PORT = process.env.PORT || 8080;
 
-
-
 // JSON Web Token Setup
 let ExtractJwt = passportJWT.ExtractJwt;
 let JwtStrategy = passportJWT.Strategy;
@@ -44,11 +42,6 @@ app.use(passport.initialize());
 
 app.use(express.json());
 app.use(cors());
-
-
-app.get("/", (req, res)=> {
-    res.send("Hello")
-})
 
 app.post("/api/user/register", (req, res) => {
     userService.registerUser(req.body)
