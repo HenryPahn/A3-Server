@@ -90,11 +90,13 @@ module.exports.getFavourites = function (id) {
 }
 
 module.exports.addFavourite = function (id, favUri) {
+    let encodedUri = encodeURIComponent(favUri)
+    let doubleEncodedUri = encodeURIComponent(favUri)
     return new Promise(function (resolve, reject) {
         User.findById(id).exec().then(user => {
             if (user.favourites.length < 50) {
                 User.findByIdAndUpdate(id,
-                    { $addToSet: { favourites: favUri } },
+                    { $addToSet: { favourites: doubleEncodedUri } },
                     { new: true }
                 ).exec()
                     .then(user => { resolve(user.favourites); })
@@ -104,14 +106,15 @@ module.exports.addFavourite = function (id, favUri) {
             }
 
         })
-
     });
 }
 
 module.exports.removeFavourite = function (id, favUri) {
+    let encodedUri = encodeURIComponent(favUri)
+    let doubleEncodedUri = encodeURIComponent(favUri)
     return new Promise(function (resolve, reject) {
         User.findByIdAndUpdate(id,
-            { $pull: { favourites: favUri } },
+            { $pull: { favourites: doubleEncodedUri } },
             { new: true }
         )
             .then(user => {

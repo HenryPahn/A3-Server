@@ -128,7 +128,7 @@ app.delete("/api/user/favourites/:uri",passport.authenticate('jwt', { session: f
 
 userService.connect()
 .then(() => {
-    app.listen(HTTP_PORT, () => { console.log("API listening on: " + HTTP_PORT) });
+    app.listen(HTTP_PORT, () => { console.log("API listening on: http://localhost:" + HTTP_PORT) });
 })
 .catch((err) => {
     console.log("unable to start the server: " + err);
