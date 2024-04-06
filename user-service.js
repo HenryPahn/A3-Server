@@ -11,7 +11,8 @@ let userSchema = new Schema({
         unique: true
     },
     password: String,
-    favourites: [String]
+    favourites: [String], 
+    history: [String],
 });
 
 let User;
@@ -122,49 +123,47 @@ module.exports.removeFavourite = function (id, favUri) {
     });
 }
 
-// module.exports.getHistory = function (id) {
-//     return new Promise(function (resolve, reject) {
+module.exports.getHistory = function (id) {
+    return new Promise(function (resolve, reject) {
+        User.findById(id)
+            .exec()
+            .then(user => {
+                resolve(user.history)
+            }).catch(err => {
+                reject(`Unable to get favourites for user with id: ${id}`);
+            });
+    });
+}
 
-//         User.findById(id)
-//             .exec()
-//             .then(user => {
-//                 resolve(user.history)
-//             }).catch(err => {
-//                 reject(`Unable to get history for user with id: ${id}`);
-//             });
-//     });
-// }
+module.exports.addHistory = function (id, favUri) {
+    return new Promise(function (resolve, reject) {
+        User.findById(id).exec().then(user => {
+            if (user.history.length < 50) {
+                User.findByIdAndUpdate(id,
+                    { $addToSet: { history: encodeURIComponent(favUri) } },
+                    { new: true }
+                ).exec()
+                    .then(user => { resolve(user.history); })
+                    .catch(err => { reject(`Unable to update favourites for user with id: ${id}`); })
+            } else {
+                reject(`Unable to update favourites for user with id: ${id}`);
+            }
 
-// module.exports.addHistory = function (id, historyId) {
+        })
+    });
+}
 
-//     return new Promise(function (resolve, reject) {
-
-//         User.findById(id).exec().then(user => {
-//             if (user.favourites.length < 50) {
-//                 User.findByIdAndUpdate(id,
-//                     { $addToSet: { history: historyId } },
-//                     { new: true }
-//                 ).exec()
-//                     .then(user => { resolve(user.history); })
-//                     .catch(err => { reject(`Unable to update history for user with id: ${id}`); })
-//             } else {
-//                 reject(`Unable to update history for user with id: ${id}`);
-//             }
-//         })
-//     });
-// }
-
-// module.exports.removeHistory = function (id, historyId) {
-//     return new Promise(function (resolve, reject) {
-//         User.findByIdAndUpdate(id,
-//             { $pull: { history: historyId } },
-//             { new: true }
-//         ).exec()
-//             .then(user => {
-//                 resolve(user.history);
-//             })
-//             .catch(err => {
-//                 reject(`Unable to update history for user with id: ${id}`);
-//             })
-//     });
-// }
+module.exports.removeHistory = function (id, favUri) {
+    return new Promise(function (resolve, reject) {
+        User.findByIdAndUpdate(id,
+            { $pull: { history: encodeURIComponent(favUri) } },
+            { new: true }
+        )
+            .then(user => {
+                resolve(user.history);
+            })
+            .catch(err => {
+                reject(`Unable to update favourites for user with id: ${id}`);
+            })
+    });
+}
