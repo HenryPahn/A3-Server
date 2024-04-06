@@ -70,8 +70,8 @@ app.post("/api/user/login", (req, res) => {
     });
 });
 
-app.get("/api/user/mealPlans",passport.authenticate('jwt', { session: false }),(req, res) => {
-    userService.getMealPlans(req.user._id)
+app.get("/api/user/favourites",passport.authenticate('jwt', { session: false }),(req, res) => {
+    userService.getFavourites(req.user._id)
     .then(data => {
         res.json(data);
     }).catch(msg => {
@@ -80,8 +80,8 @@ app.get("/api/user/mealPlans",passport.authenticate('jwt', { session: false }),(
 
 });
 
-app.put("/api/user/mealPlans/:id", passport.authenticate('jwt', { session: false }),(req, res) => {
-    userService.addPlan(req.user._id, req.params.id)
+app.put("/api/user/favourites/:uri", passport.authenticate('jwt', { session: false }),(req, res) => {
+    userService.addFavourite(req.user._id, req.params.uri)
     .then(data => {
         res.json(data)
     }).catch(msg => {
@@ -89,8 +89,8 @@ app.put("/api/user/mealPlans/:id", passport.authenticate('jwt', { session: false
     })
 });
 
-app.delete("/api/user/mealPlans/:id",passport.authenticate('jwt', { session: false }),(req, res) => {
-    userService.removePlan(req.user._id, req.params.id)
+app.delete("/api/user/favourites/:uri",passport.authenticate('jwt', { session: false }),(req, res) => {
+    userService.removeFavourite(req.user._id, req.params.uri)
     .then(data => {
         res.json(data)
     }).catch(msg => {
@@ -98,33 +98,33 @@ app.delete("/api/user/mealPlans/:id",passport.authenticate('jwt', { session: fal
     })
 });
 
-app.get("/api/user/history",passport.authenticate('jwt', { session: false }),(req, res) => {
-    userService.getHistory(req.user._id)
-    .then(data => {
-        res.json(data);
-    }).catch(msg => {
-        res.status(422).json({ error: msg });
-    })
+// app.get("/api/user/history",passport.authenticate('jwt', { session: false }),(req, res) => {
+//     userService.getHistory(req.user._id)
+//     .then(data => {
+//         res.json(data);
+//     }).catch(msg => {
+//         res.status(422).json({ error: msg });
+//     })
 
-});
+// });
 
-app.put("/api/user/history/:id", passport.authenticate('jwt', { session: false }),(req, res) => {
-    userService.addHistory(req.user._id, req.params.id)
-    .then(data => {
-        res.json(data)
-    }).catch(msg => {
-        res.status(422).json({ error: msg });
-    })
-});
+// app.put("/api/user/history/:id", passport.authenticate('jwt', { session: false }),(req, res) => {
+//     userService.addHistory(req.user._id, req.params.id)
+//     .then(data => {
+//         res.json(data)
+//     }).catch(msg => {
+//         res.status(422).json({ error: msg });
+//     })
+// });
 
-app.delete("/api/user/history/:id", passport.authenticate('jwt', { session: false }),(req, res) => {
-    userService.removeHistory(req.user._id, req.params.id)
-    .then(data => {
-        res.json(data)
-    }).catch(msg => {
-        res.status(422).json({ error: msg });
-    })
-});
+// app.delete("/api/user/history/:id", passport.authenticate('jwt', { session: false }),(req, res) => {
+//     userService.removeHistory(req.user._id, req.params.id)
+//     .then(data => {
+//         res.json(data)
+//     }).catch(msg => {
+//         res.status(422).json({ error: msg });
+//     })
+// });
 
 userService.connect()
 .then(() => {
