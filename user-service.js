@@ -95,7 +95,11 @@ module.exports.addFavourite = function (id, favUri) {
         User.findById(id).exec().then(user => {
             if (user.favourites.length < 50) {
                 User.findByIdAndUpdate(id,
-                    { $addToSet: { favourites: encodeURIComponent(favUri) } },
+                    { $pull: { favourites: encodeURIComponent(favUri) } },
+                    { new: true }
+                ).exec()
+                User.findByIdAndUpdate(id,
+                    { $push: { favourites: { $each: [encodeURIComponent(favUri)], $position: 0 } } },
                     { new: true }
                 ).exec()
                     .then(user => { resolve(user.favourites); })
@@ -140,7 +144,11 @@ module.exports.addHistory = function (id, favUri) {
         User.findById(id).exec().then(user => {
             if (user.history.length < 50) {
                 User.findByIdAndUpdate(id,
-                    { $addToSet: { history: encodeURIComponent(favUri) } },
+                    { $pull: { history: encodeURIComponent(favUri) } },
+                    { new: true }
+                ).exec()
+                User.findByIdAndUpdate(id,
+                    { $push: { history: { $each: [encodeURIComponent(favUri)], $position: 0 } } },
                     { new: true }
                 ).exec()
                     .then(user => { resolve(user.history); })
@@ -148,7 +156,6 @@ module.exports.addHistory = function (id, favUri) {
             } else {
                 reject(`Unable to update favourites for user with id: ${id}`);
             }
-
         })
     });
 }
