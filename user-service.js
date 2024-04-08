@@ -11,7 +11,7 @@ let userSchema = new Schema({
         unique: true
     },
     password: String,
-    favourites: [String], 
+    favourites: [String],
     history: [String],
 });
 
