@@ -11,11 +11,318 @@ let userSchema = new Schema({
         unique: true
     },
     password: String,
-    favourites: [String],
-    history: [String],
+    favourites: [{
+        cuisineType: String,
+        dishType: String,
+        mealType: String,
+        image: String,
+        label: String,
+        uri: String
+    }],
+    history: [{
+        cuisineType: String,
+        dishType: String,
+        mealType: String,
+        image: String,
+        label: String,
+        uri: String
+    }],
+    mealPlan: [
+        {
+            day: {
+                type: String,
+                enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+            },
+            meals: [
+                {
+                    mealType: {
+                        type: String,
+                        enum: ['Breakfast', "Lunch", "Dinner"],
+                    },
+                    title: String,
+                    description: String,
+                    recipe: {
+                        image: String,
+                        label: String,
+                        yield: Number,
+                        calories: Number
+                    }
+                }
+            ]
+        }
+    ]
 });
 
 let User;
+
+const emptyMealPlan = [
+    {
+        "day": "Monday",
+        "meals": [
+            {
+                "mealType": "Breakfast",
+                "title": "",
+                "description": "",
+                "recipe": {
+                    "image": "",
+                    "label": "",
+                    "yield": 0,
+                    "calories": 0
+                }
+            },
+            {
+                "mealType": "Lunch",
+                "title": "",
+                "description": "",
+                "recipe": {
+                    "image": "",
+                    "label": "",
+                    "yield": 0,
+                    "calories": 0
+                }
+            },
+            {
+                "mealType": "Dinner",
+                "title": "",
+                "description": "",
+                "recipe": {
+                    "image": "",
+                    "label": "",
+                    "yield": 0,
+                    "calories": 0
+                }
+            }
+        ]
+    },
+    {
+        "day": "Tuesday",
+        "meals": [
+            {
+                "mealType": "Breakfast",
+                "title": "",
+                "description": "",
+                "recipe": {
+                    "image": "",
+                    "label": "",
+                    "yield": 0,
+                    "calories": 0
+                }
+            },
+            {
+                "mealType": "Lunch",
+                "title": "",
+                "description": "",
+                "recipe": {
+                    "image": "",
+                    "label": "",
+                    "yield": 0,
+                    "calories": 0
+                }
+            },
+            {
+                "mealType": "Dinner",
+                "title": "",
+                "description": "",
+                "recipe": {
+                    "image": "",
+                    "label": "",
+                    "yield": 0,
+                    "calories": 0
+                }
+            }
+        ]
+    },
+    {
+        "day": "Wednesday",
+        "meals": [
+            {
+                "mealType": "Breakfast",
+                "title": "",
+                "description": "",
+                "recipe": {
+                    "image": "",
+                    "label": "",
+                    "yield": 0,
+                    "calories": 0
+                }
+            },
+            {
+                "mealType": "Lunch",
+                "title": "",
+                "description": "",
+                "recipe": {
+                    "image": "",
+                    "label": "",
+                    "yield": 0,
+                    "calories": 0
+                }
+            },
+            {
+                "mealType": "Dinner",
+                "title": "",
+                "description": "",
+                "recipe": {
+                    "image": "",
+                    "label": "",
+                    "yield": 0,
+                    "calories": 0
+                }
+            }
+        ]
+    },
+    {
+        "day": "Thursday",
+        "meals": [
+            {
+                "mealType": "Breakfast",
+                "title": "",
+                "description": "",
+                "recipe": {
+                    "image": "",
+                    "label": "",
+                    "yield": 0,
+                    "calories": 0
+                }
+            },
+            {
+                "mealType": "Lunch",
+                "title": "",
+                "description": "",
+                "recipe": {
+                    "image": "",
+                    "label": "",
+                    "yield": 0,
+                    "calories": 0
+                }
+            },
+            {
+                "mealType": "Dinner",
+                "title": "",
+                "description": "",
+                "recipe": {
+                    "image": "",
+                    "label": "",
+                    "yield": 0,
+                    "calories": 0
+                }
+            }
+        ]
+    },
+    {
+        "day": "Friday",
+        "meals": [
+            {
+                "mealType": "Breakfast",
+                "title": "",
+                "description": "",
+                "recipe": {
+                    "image": "",
+                    "label": "",
+                    "yield": 0,
+                    "calories": 0
+                }
+            },
+            {
+                "mealType": "Lunch",
+                "title": "",
+                "description": "",
+                "recipe": {
+                    "image": "",
+                    "label": "",
+                    "yield": 0,
+                    "calories": 0
+                }
+            },
+            {
+                "mealType": "Dinner",
+                "title": "",
+                "description": "",
+                "recipe": {
+                    "image": "",
+                    "label": "",
+                    "yield": 0,
+                    "calories": 0
+                }
+            }
+        ]
+    },
+    {
+        "day": "Saturday",
+        "meals": [
+            {
+                "mealType": "Breakfast",
+                "title": "",
+                "description": "",
+                "recipe": {
+                    "image": "",
+                    "label": "",
+                    "yield": 0,
+                    "calories": 0
+                }
+            },
+            {
+                "mealType": "Lunch",
+                "title": "",
+                "description": "",
+                "recipe": {
+                    "image": "",
+                    "label": "",
+                    "yield": 0,
+                    "calories": 0
+                }
+            },
+            {
+                "mealType": "Dinner",
+                "title": "",
+                "description": "",
+                "recipe": {
+                    "image": "",
+                    "label": "",
+                    "yield": 0,
+                    "calories": 0
+                }
+            }
+        ]
+    },
+    {
+        "day": "Sunday",
+        "meals": [
+            {
+                "mealType": "Breakfast",
+                "title": "",
+                "description": "",
+                "recipe": {
+                    "image": "",
+                    "label": "",
+                    "yield": 0,
+                    "calories": 0
+                }
+            },
+            {
+                "mealType": "Lunch",
+                "title": "",
+                "description": "",
+                "recipe": {
+                    "image": "",
+                    "label": "",
+                    "yield": 0,
+                    "calories": 0
+                }
+            },
+            {
+                "mealType": "Dinner",
+                "title": "",
+                "description": "",
+                "recipe": {
+                    "image": "",
+                    "label": "",
+                    "yield": 0,
+                    "calories": 0
+                }
+            }
+        ]
+    }
+]
 
 module.exports.connect = function () {
     return new Promise(function (resolve, reject) {
@@ -44,6 +351,8 @@ module.exports.registerUser = function (userData) {
                 userData.password = hash;
 
                 let newUser = new User(userData);
+
+                newUser.mealPlan = emptyMealPlan;
 
                 newUser.save().then(() => {
                     resolve("User " + userData.userName + " successfully registered");
@@ -90,32 +399,36 @@ module.exports.getFavourites = function (id) {
     });
 }
 
-module.exports.addFavourite = function (id, favUri) {
+module.exports.addFavourite = function (id, favourite) {
     return new Promise(function (resolve, reject) {
         User.findById(id).exec().then(user => {
             if (user.favourites.length < 50) {
                 User.findByIdAndUpdate(id,
-                    { $pull: { favourites: encodeURIComponent(favUri) } },
-                    { new: true }
+                    {
+                        $pull: { favourites: { uri: favourite.uri } },
+                    },
+                    { new: true, safe: true, upsert: true },
                 ).exec()
                 User.findByIdAndUpdate(id,
-                    { $push: { favourites: { $each: [encodeURIComponent(favUri)], $position: 0 } } },
-                    { new: true }
+                    {
+                        $push: { favourites: favourite }
+                    },
+                    { new: true, safe: true, upsert: true },
                 ).exec()
-                    .then(user => { resolve(user.favourites); })
-                    .catch(err => { reject(`Unable to update favourites for user with id: ${id}`); })
+                    .then(user => { resolve(user.history); })
+                    .catch(err => { reject(`Unable to update history for user with id: ${id}`); })
+
             } else {
                 reject(`Unable to update favourites for user with id: ${id}`);
             }
-
         })
     });
 }
 
-module.exports.removeFavourite = function (id, favUri) {
+module.exports.removeFavourite = function (id, favourite) {
     return new Promise(function (resolve, reject) {
         User.findByIdAndUpdate(id,
-            { $pull: { favourites: encodeURIComponent(favUri) } },
+            { $pull: { favourites: { uri: favourite.uri } } },
             { new: true }
         )
             .then(user => {
@@ -134,43 +447,99 @@ module.exports.getHistory = function (id) {
             .then(user => {
                 resolve(user.history)
             }).catch(err => {
-                reject(`Unable to get favourites for user with id: ${id}`);
+                reject(`Unable to get history for user with id: ${id}`);
             });
     });
 }
 
-module.exports.addHistory = function (id, favUri) {
+module.exports.addHistory = function (id, history) {
     return new Promise(function (resolve, reject) {
         User.findById(id).exec().then(user => {
             if (user.history.length < 50) {
                 User.findByIdAndUpdate(id,
-                    { $pull: { history: encodeURIComponent(favUri) } },
-                    { new: true }
+                    {
+                        $pull: { history: { uri: history.uri } },
+                    },
+                    { new: true, safe: true, upsert: true },
                 ).exec()
                 User.findByIdAndUpdate(id,
-                    { $push: { history: { $each: [encodeURIComponent(favUri)], $position: 0 } } },
-                    { new: true }
+                    {
+                        $push: { history: history }
+                    },
+                    { new: true, safe: true, upsert: true },
                 ).exec()
                     .then(user => { resolve(user.history); })
-                    .catch(err => { reject(`Unable to update favourites for user with id: ${id}`); })
+                    .catch(err => { reject(`Unable to update history for user with id: ${id}`); })
             } else {
-                reject(`Unable to update favourites for user with id: ${id}`);
+                reject(`Unable to update history for user with id: ${id}`);
             }
         })
     });
 }
 
-module.exports.removeHistory = function (id, favUri) {
+module.exports.removeHistory = function (id, history) {
     return new Promise(function (resolve, reject) {
         User.findByIdAndUpdate(id,
-            { $pull: { history: encodeURIComponent(favUri) } },
-            { new: true }
-        )
+            {
+                $pull: { history: { uri: history.uri } },
+            },
+            { new: true, safe: true, upsert: true },
+        ).exec()
             .then(user => {
                 resolve(user.history);
             })
             .catch(err => {
-                reject(`Unable to update favourites for user with id: ${id}`);
+                reject(`Unable to remove history for user with id: ${id}`);
+            })
+    });
+}
+
+module.exports.getMealPlan = function (id) {
+    return new Promise(function (resolve, reject) {
+        User.findById(id)
+            .exec()
+            .then(user => {
+                resolve(user.mealPlan)
+            }).catch(err => {
+                reject(`Unable to get meal plan for user with id: ${id}`);
+            });
+    });
+}
+
+module.exports.addMealPlan = function (id, mealPlan) {
+    return new Promise(function (resolve, reject) {
+        // console.log(mealPlan)
+        User.findById(id)
+            .exec()
+            .then(user => {
+                for (let data of user.mealPlan) {
+                    if (data.day === mealPlan.dayOfWeek) {
+                        for (let meal of data.meals) {
+                            if (meal.mealType === mealPlan.mealType) {
+                                meal.title = mealPlan.title
+                                meal.description = mealPlan.description
+                                meal.recipe = mealPlan.recipe
+                                user.save()
+                            }
+                        }
+                    }
+                }
+            }).catch(err => {
+                reject(`Unable to get meal plan for user with id: ${id}`);
+            });
+    });
+}
+
+module.exports.removeMealPlan = function (id, mealPlan) {
+    return new Promise(function (resolve, reject) {
+        User.findByIdAndUpdate(id, { $set: { mealPlan: emptyMealPlan } },
+            { new: true }
+        )
+            .then(user => {
+                resolve(user.mealPlan);
+            })
+            .catch(err => {
+                reject(`Unable to remove meal plan for user with id: ${id}`);
             })
     });
 }
