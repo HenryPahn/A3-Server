@@ -141,7 +141,16 @@ app.put('/api/user/mealPlan/add', passport.authenticate('jwt', { session: false 
 })
 
 app.delete('/api/user/mealPlan/remove', passport.authenticate('jwt', { session: false }), (req, res) => {
-    userService.removeMealPlan(req.user._id)
+    userService.removeMealPlan(req.user._id, req.body.mealPlan)
+        .then(data => {
+            res.json(data);
+        }).catch(msg => {
+            res.status(422).json({ error: msg });
+        })
+})
+
+app.delete('/api/user/mealPlan/removeAll', passport.authenticate('jwt', { session: false }), (req, res) => {
+    userService.removeAllMealPlan(req.user._id)
         .then(data => {
             res.json(data);
         }).catch(msg => {

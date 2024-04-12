@@ -45,7 +45,8 @@ let userSchema = new Schema({
                         image: String,
                         label: String,
                         yield: Number,
-                        calories: Number
+                        calories: Number, 
+                        uri: String
                     }
                 }
             ]
@@ -67,7 +68,8 @@ const emptyMealPlan = [
                     "image": "",
                     "label": "",
                     "yield": 0,
-                    "calories": 0
+                    "calories": 0, 
+                    "uri": ""
                 }
             },
             {
@@ -78,7 +80,8 @@ const emptyMealPlan = [
                     "image": "",
                     "label": "",
                     "yield": 0,
-                    "calories": 0
+                    "calories": 0, 
+                    "uri": ""
                 }
             },
             {
@@ -89,7 +92,8 @@ const emptyMealPlan = [
                     "image": "",
                     "label": "",
                     "yield": 0,
-                    "calories": 0
+                    "calories": 0, 
+                    "uri": ""
                 }
             }
         ]
@@ -105,7 +109,8 @@ const emptyMealPlan = [
                     "image": "",
                     "label": "",
                     "yield": 0,
-                    "calories": 0
+                    "calories": 0, 
+                    "uri": ""
                 }
             },
             {
@@ -116,7 +121,8 @@ const emptyMealPlan = [
                     "image": "",
                     "label": "",
                     "yield": 0,
-                    "calories": 0
+                    "calories": 0, 
+                    "uri": ""
                 }
             },
             {
@@ -127,7 +133,8 @@ const emptyMealPlan = [
                     "image": "",
                     "label": "",
                     "yield": 0,
-                    "calories": 0
+                    "calories": 0, 
+                    "uri": ""
                 }
             }
         ]
@@ -143,7 +150,8 @@ const emptyMealPlan = [
                     "image": "",
                     "label": "",
                     "yield": 0,
-                    "calories": 0
+                    "calories": 0, 
+                    "uri": ""
                 }
             },
             {
@@ -154,7 +162,8 @@ const emptyMealPlan = [
                     "image": "",
                     "label": "",
                     "yield": 0,
-                    "calories": 0
+                    "calories": 0, 
+                    "uri": ""
                 }
             },
             {
@@ -165,7 +174,8 @@ const emptyMealPlan = [
                     "image": "",
                     "label": "",
                     "yield": 0,
-                    "calories": 0
+                    "calories": 0, 
+                    "uri": ""
                 }
             }
         ]
@@ -181,7 +191,8 @@ const emptyMealPlan = [
                     "image": "",
                     "label": "",
                     "yield": 0,
-                    "calories": 0
+                    "calories": 0, 
+                    "uri": ""
                 }
             },
             {
@@ -192,7 +203,8 @@ const emptyMealPlan = [
                     "image": "",
                     "label": "",
                     "yield": 0,
-                    "calories": 0
+                    "calories": 0, 
+                    "uri": ""
                 }
             },
             {
@@ -203,7 +215,8 @@ const emptyMealPlan = [
                     "image": "",
                     "label": "",
                     "yield": 0,
-                    "calories": 0
+                    "calories": 0, 
+                    "uri": ""
                 }
             }
         ]
@@ -219,7 +232,8 @@ const emptyMealPlan = [
                     "image": "",
                     "label": "",
                     "yield": 0,
-                    "calories": 0
+                    "calories": 0, 
+                    "uri": ""
                 }
             },
             {
@@ -230,7 +244,8 @@ const emptyMealPlan = [
                     "image": "",
                     "label": "",
                     "yield": 0,
-                    "calories": 0
+                    "calories": 0, 
+                    "uri": ""
                 }
             },
             {
@@ -241,7 +256,8 @@ const emptyMealPlan = [
                     "image": "",
                     "label": "",
                     "yield": 0,
-                    "calories": 0
+                    "calories": 0, 
+                    "uri": ""
                 }
             }
         ]
@@ -257,7 +273,8 @@ const emptyMealPlan = [
                     "image": "",
                     "label": "",
                     "yield": 0,
-                    "calories": 0
+                    "calories": 0, 
+                    "uri": ""
                 }
             },
             {
@@ -268,7 +285,8 @@ const emptyMealPlan = [
                     "image": "",
                     "label": "",
                     "yield": 0,
-                    "calories": 0
+                    "calories": 0, 
+                    "uri": ""
                 }
             },
             {
@@ -279,7 +297,8 @@ const emptyMealPlan = [
                     "image": "",
                     "label": "",
                     "yield": 0,
-                    "calories": 0
+                    "calories": 0, 
+                    "uri": ""
                 }
             }
         ]
@@ -295,7 +314,8 @@ const emptyMealPlan = [
                     "image": "",
                     "label": "",
                     "yield": 0,
-                    "calories": 0
+                    "calories": 0, 
+                    "uri": ""
                 }
             },
             {
@@ -306,7 +326,8 @@ const emptyMealPlan = [
                     "image": "",
                     "label": "",
                     "yield": 0,
-                    "calories": 0
+                    "calories": 0, 
+                    "uri": ""
                 }
             },
             {
@@ -317,7 +338,8 @@ const emptyMealPlan = [
                     "image": "",
                     "label": "",
                     "yield": 0,
-                    "calories": 0
+                    "calories": 0, 
+                    "uri": ""
                 }
             }
         ]
@@ -508,7 +530,6 @@ module.exports.getMealPlan = function (id) {
 
 module.exports.addMealPlan = function (id, mealPlan) {
     return new Promise(function (resolve, reject) {
-        // console.log(mealPlan)
         User.findById(id)
             .exec()
             .then(user => {
@@ -519,11 +540,14 @@ module.exports.addMealPlan = function (id, mealPlan) {
                                 meal.title = mealPlan.title
                                 meal.description = mealPlan.description
                                 meal.recipe = mealPlan.recipe
+                                meal.uri = mealPlan.uri
                                 user.save()
+                                break;
                             }
                         }
                     }
                 }
+                resolve(user.mealPlan);
             }).catch(err => {
                 reject(`Unable to get meal plan for user with id: ${id}`);
             });
@@ -531,6 +555,34 @@ module.exports.addMealPlan = function (id, mealPlan) {
 }
 
 module.exports.removeMealPlan = function (id, mealPlan) {
+    return new Promise(function (resolve, reject) {
+        User.findById(id)
+            .then(user => {
+                for(let data of user.mealPlan) {
+                    if(data.day === mealPlan.dayOfWeek) {
+                        for(let meal of data.meals) {
+                            if(meal.mealType === mealPlan.mealType) {
+                                meal.recipe.image = "", 
+                                meal.recipe.label = "", 
+                                meal.recipe.yield = "", 
+                                meal.recipe.calories = "", 
+                                meal.recipe.uri = ""
+                                user.save()
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                resolve(user.mealPlan);
+            })
+            .catch(err => {
+                reject(`Unable to remove meal plan for user with id: ${id}`);
+            })
+    });
+}
+
+module.exports.removeAllMealPlan = function (id, mealPlan) {
     return new Promise(function (resolve, reject) {
         User.findByIdAndUpdate(id, { $set: { mealPlan: emptyMealPlan } },
             { new: true }
