@@ -16,16 +16,18 @@ let JwtStrategy = passportJWT.Strategy;
 
 // Configure its options
 let jwtOptions = {
-  jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('jwt'),
-  secretOrKey: process.env.JWT_SECRET,
+    jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('jwt'),
+    secretOrKey: process.env.JWT_SECRET,
 };
 
 let strategy = new JwtStrategy(jwtOptions, function (jwt_payload, next) {
     console.log('payload received', jwt_payload);
 
     if (jwt_payload) {
-        next(null, { _id: jwt_payload._id, 
-            userName: jwt_payload.userName }); 
+        next(null, {
+            _id: jwt_payload._id,
+            userName: jwt_payload.userName
+        });
     } else {
         next(null, false);
     }
@@ -40,7 +42,7 @@ app.use(passport.initialize());
 app.use(express.json());
 app.use(cors());
 
-app.get('/', (req, res)=>{
+app.get('/', (req, res) => {
     res.send("hello")
 })
 
@@ -56,7 +58,7 @@ app.post("/api/user/register", (req, res) => {
 app.post("/api/user/login", (req, res) => {
     userService.checkUser(req.body)
         .then((user) => {
-            let payload = { 
+            let payload = {
                 _id: user._id,
                 userName: user.userName,
             };
@@ -67,7 +69,16 @@ app.post("/api/user/login", (req, res) => {
         });
 });
 
-app.get("/api/user/favourites",passport.authenticate('jwt', { session: false }),(req, res) => {
+app.post('/api/user/resetPassword', (req, res) => {
+    userService.resetUserPassword(req.body)
+        .then((msg) => {
+            res.json({ "message": msg });
+        }).catch((msg) => {
+            res.status(422).json({ "message": msg });
+        });
+})
+
+app.get("/api/user/favourites", passport.authenticate('jwt', { session: false }), (req, res) => {
     userService.getFavourites(req.user._id)
         .then(data => {
             res.json(data);
@@ -77,7 +88,7 @@ app.get("/api/user/favourites",passport.authenticate('jwt', { session: false }),
 
 });
 
-app.put("/api/user/favourites/add", passport.authenticate('jwt', { session: false }),(req, res) => {
+app.put("/api/user/favourites/add", passport.authenticate('jwt', { session: false }), (req, res) => {
     userService.addFavourite(req.user._id, req.body.favourite)
         .then(data => {
             res.json(data)
@@ -86,7 +97,7 @@ app.put("/api/user/favourites/add", passport.authenticate('jwt', { session: fals
         })
 });
 
-app.delete("/api/user/favourites/remove",passport.authenticate('jwt', { session: false }),(req, res) => {
+app.delete("/api/user/favourites/remove", passport.authenticate('jwt', { session: false }), (req, res) => {
     userService.removeFavourite(req.user._id, req.body)
         .then(data => {
             res.json(data)
@@ -95,7 +106,7 @@ app.delete("/api/user/favourites/remove",passport.authenticate('jwt', { session:
         })
 });
 
-app.get("/api/user/history",passport.authenticate('jwt', { session: false }),(req, res) => {
+app.get("/api/user/history", passport.authenticate('jwt', { session: false }), (req, res) => {
     userService.getHistory(req.user._id)
         .then(data => {
             res.json(data);
@@ -104,7 +115,7 @@ app.get("/api/user/history",passport.authenticate('jwt', { session: false }),(re
         })
 });
 
-app.put("/api/user/history/add", passport.authenticate('jwt', { session: false }),(req, res) => {
+app.put("/api/user/history/add", passport.authenticate('jwt', { session: false }), (req, res) => {
     userService.addHistory(req.user._id, req.body.history)
         .then(data => {
             res.json(data)
@@ -113,7 +124,7 @@ app.put("/api/user/history/add", passport.authenticate('jwt', { session: false }
         })
 });
 
-app.delete("/api/user/history/remove",passport.authenticate('jwt', { session: false }),(req, res) => {
+app.delete("/api/user/history/remove", passport.authenticate('jwt', { session: false }), (req, res) => {
     userService.removeHistory(req.user._id, req.body)
         .then(data => {
             res.json(data)
@@ -159,10 +170,10 @@ app.delete('/api/user/mealPlan/removeAll', passport.authenticate('jwt', { sessio
 })
 
 userService.connect()
-.then(() => {
-    app.listen(HTTP_PORT, () => { console.log("API listening on: http://localhost:" + HTTP_PORT) });
-})
-.catch((err) => {
-    console.log("unable to start the server: " + err);
-    process.exit();
-});
+    .then(() => {
+        app.listen(HTTP_PORT, () => { console.log("API listening on: http://localhost:" + HTTP_PORT) });
+    })
+    .catch((err) => {
+        console.log("unable to start the server: " + err);
+        process.exit();
+    });
